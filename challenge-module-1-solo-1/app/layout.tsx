@@ -1,12 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
-
-const interSans = Inter({
-  variable: "--font-inter-sans",
-  subsets: ["latin"],
-});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +26,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${interSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <nav className="bg-red-500 text-white text-4xl p-4 flex">
+          <Link href="/">Accueil</Link> 
+          <Link 
+          className="ml-auto"
+          href="/about">About</Link>
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
