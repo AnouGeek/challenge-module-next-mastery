@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import ProductForm from "@/components/ProductForm";
+import {ProductForm} from "@/components/ProductForm";
 
 interface Product {
   id: number;
