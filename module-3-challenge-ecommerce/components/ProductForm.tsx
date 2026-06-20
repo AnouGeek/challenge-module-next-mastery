@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+import { createProduct } from "@/actions/product.action";
+
 // 1. Schéma Zod
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -36,8 +38,19 @@ export function ProductForm() {
   });
 
   // 3. Soumission
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Données validées par le client :", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("1. Données validées par le client :", values);
+
+    // On envoie les données dans notre tuyau sécurisé vers le serveur
+    const response = await createProduct(values);
+
+    // On écoute la réponse qui revient du serveur
+    if (response.success) {
+      console.log("2. Réponse du serveur :", response.message);
+      
+      // Bonus : on vide le formulaire une fois que c'est sauvegardé !
+      form.reset(); 
+    }
   }
 
   // 4. L'enveloppe
