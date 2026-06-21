@@ -46,6 +46,20 @@ export async function submitOrder(
   const result = orderSchema.safeParse(raw);
 
   if (!result.success) {
+    // result.error contient toutes les erreurs Zod en vrac
+    // treeifyError les organise en arbre par champ :
+    // tree ressemble à ça :
+    // {
+    //   properties: {
+    //     name: { errors: ["Le nom doit contenir au moins 2 caractères"] },
+    //     email: { errors: ["Email invalide"] },
+    //     address: { errors: ["..."] }
+    //   }
+    // }
+
+    // Donc tree.properties?.name?.errors
+    // = les erreurs du champ name
+    // Le ?. c'est "si ça existe"
     const tree = z.treeifyError(result.error);
     return {
       errors: {
