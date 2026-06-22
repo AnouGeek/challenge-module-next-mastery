@@ -9,12 +9,12 @@ export type OrderState = {
     address?: string[];
   };
   success?: boolean;
-}
+};
 
 const orderSchema = z.object({
-  name: z.string().min(2, "dsaqfqsf"),
-  email: z.email("email invalide"),
-  address: z.string().min(5, "dsfqsdf"),
+  name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
+  email: z.email("Email invalide"),
+  address: z.string().min(5, "L'adresse doit contenir au moins 5 caractères"),
 });
 
 export async function addToCart(productId: number) {
@@ -22,26 +22,29 @@ export async function addToCart(productId: number) {
   revalidatePath("/products");
 }
 
-export async function submitOrder(prevState: OrderState, formData: FormData): Promise<OrderState> {
-    const raw = {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        address: formData.get("address"),
-    }
+export async function submitOrder(
+  prevState: OrderState,
+  formData: FormData,
+): Promise<OrderState> {
+  const raw = {
+    name: formData.get("name"),
+    email: formData.get("email"),
+    address: formData.get("address"),
+  };
 
-    const result = orderSchema.safeParse(raw)
+  const result = orderSchema.safeParse(raw);
 
-    if(!result.success) {
-        const tree = z.treeifyError(result.error)
-        return {
-            errors: {
-                name: tree.properties?.name?.errors,
-                email: tree.properties?.email?.errors,
-                address: tree.properties?.address?.errors
-            }
-        }
-    }
+  if (!result.success) {
+    const tree = z.treeifyError(result.error);
+    return {
+      errors: {
+        name: tree.properties?.name?.errors,
+        email: tree.properties?.email?.errors,
+        address: tree.properties?.address?.errors,
+      },
+    };
+  }
 
-    console.log("Commande validée", result.data)
-    return { success: true}
+  console.log("Commande validée", result.data);
+  return { success: true };
 }
