@@ -3,7 +3,7 @@ import { getProduct } from "@/lib/products";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import AddToCartButton from "@/components/AddToCartButton";
-// import OrderForm from "@/components/OrderForm";
+import OrderForm from "@/components/OrderForm";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -28,10 +28,10 @@ export default async function ProductPage({ params }: Props) {
       <p className="text-gray-500 mb-4">{product.description}</p>
       <p className="text-2xl font-bold mb-4">{product.price} €</p>
       {/* Separator = ligne de séparation shadcn */}
-      {/* <Separator className="mb-4" /> */}
+      <Separator className="mb-4" />
       <AddToCartButton productId={product.id} />
-      {/* <Separator className="my-8" /> */}
-      {/* <OrderForm /> */}
+      <Separator className="my-8" />
+      <OrderForm />
     </main>
   );
 }
