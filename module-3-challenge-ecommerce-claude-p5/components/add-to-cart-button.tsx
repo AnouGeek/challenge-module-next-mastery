@@ -23,7 +23,11 @@ export default function AddToCartButton({ productId }: Props) {
     });
   }
   return (
-    <Button onClick={handleClick} disabled={isPending} className="w-full mt-4">
+    <Button
+      onClick={handleClick}
+      disabled={isPending}
+      className="w-full mt-4 mb-24"
+    >
       {optimisticText}
     </Button>
   );

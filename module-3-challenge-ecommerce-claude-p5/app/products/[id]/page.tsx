@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ShoppingCart } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { getProduct } from "@/lib/products";
-import { Product } from "@/types";
+import OrderForm from "@/components/order-form";
+import AddToCartButton from "@/components/add-to-cart-button";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -67,14 +67,11 @@ export default async function ProductDetailPage({ params }: Props) {
             {product.description}
           </p>
 
-          <div className="mt-auto pt-8">
-            <Button size="lg" className="w-full gap-2 sm:w-auto">
-              <ShoppingCart className="size-5" aria-hidden="true" />
-              Add to Cart
-            </Button>
-          </div>
+          <AddToCartButton productId={product.id} />
         </div>
       </div>
+
+      <OrderForm />
     </main>
   );
 }
