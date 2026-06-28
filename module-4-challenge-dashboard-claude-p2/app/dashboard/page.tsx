@@ -1,3 +1,4 @@
+import ClientClock from "./client-clock";
 import OrdersList from "./orders-list";
 import RevenueChart from "./revenue-chart";
 import Stats from "./stats";
@@ -10,6 +11,7 @@ export default function DashboardPage() {
       <Stats />
       <OrdersList />
       <RevenueChart />
+      <ClientClock />
     </div>
   );
 }
