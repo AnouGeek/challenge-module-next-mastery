@@ -18,6 +18,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
 
 // État initial vide, avant toute soumission
 const initialState: AuthFormState = {};
@@ -27,7 +28,10 @@ export default function LoginPage() {
   // - state : le dernier AuthFormState retourné par loginAction
   // - formAction : la fonction à passer à l'attribut action="" du <form>
   // - pending : true pendant que la Server Action s'exécute (pour désactiver le bouton)
-  const [state, formAction, pending] = useActionState(loginAction, initialState);
+  const [state, formAction, pending] = useActionState(
+    loginAction,
+    initialState,
+  );
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
@@ -78,6 +82,26 @@ export default function LoginPage() {
               </Button>
             </FieldGroup>
           </form>
+
+          <div className="my-4 flex items-center gap-2">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">OU</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={() =>
+              authClient.signIn.social({
+                provider: "github",
+                callbackURL: "/dashboard", // où rediriger après connexion réussie
+              })
+            }
+          >
+            Continuer avec GitHub
+          </Button>
 
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Pas de compte ?{" "}

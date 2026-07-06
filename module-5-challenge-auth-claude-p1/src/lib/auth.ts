@@ -1,10 +1,12 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { emailOTP } from "better-auth/plugins";
+import { emailOTP, customSession } from "better-auth/plugins";
 import { Resend } from "resend";
 import { db } from "@/db";
 import * as schema from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { user as userTable } from "@/db/schema";
 
 // Client Resend pour l'envoi d'emails (OTP)
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -53,6 +55,24 @@ export const auth = betterAuth({
       },
       otpLength: 6,
       expiresIn: 300, // 5 minutes
+    }),
+
+    customSession(async ({ user, session }) => {
+      // On interroge nous-mêmes la table "user" pour récupérer le rôle,
+      // au lieu de compter sur Better Auth pour le fournir automatiquement
+      // (comportement buggé/incohérent selon les versions).
+      const [dbUser] = await db
+        .select({ role: userTable.role })
+        .from(userTable)
+        .where(eq(userTable.id, user.id));
+
+      return {
+        user: {
+          ...user,
+          role: dbUser?.role ?? "user", // valeur de repli si jamais rien trouvé
+        },
+        session,
+      };
     }),
 
     // nextCookies DOIT être le dernier plugin de la liste.

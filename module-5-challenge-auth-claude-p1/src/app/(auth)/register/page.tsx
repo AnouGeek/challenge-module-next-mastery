@@ -18,13 +18,14 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { authClient } from "@/lib/auth-client";
 
 const initialState: AuthFormState = {};
 
 export default function RegisterPage() {
   const [state, formAction, pending] = useActionState(
     registerAction,
-    initialState
+    initialState,
   );
 
   return (
@@ -89,6 +90,26 @@ export default function RegisterPage() {
               </Button>
             </FieldGroup>
           </form>
+
+          <div className="my-4 flex items-center gap-2">
+            <div className="h-px flex-1 bg-border" />
+            <span className="text-xs text-muted-foreground">OU</span>
+            <div className="h-px flex-1 bg-border" />
+          </div>
+
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full"
+            onClick={() =>
+              authClient.signIn.social({
+                provider: "github",
+                callbackURL: "/dashboard", // où rediriger après connexion réussie
+              })
+            }
+          >
+            Continuer avec GitHub
+          </Button>
 
           <p className="mt-4 text-center text-sm text-muted-foreground">
             Déjà un compte ?{" "}

@@ -26,6 +26,5 @@ export async function proxy(request: NextRequest) {
 // Le matcher précise sur quelles routes proxy.ts doit s'exécuter
 // (pas la peine de le faire tourner sur des routes publiques comme /login)
 export const config = {
-  runtime: "nodejs", // nécessaire pour utiliser certaines API Better Auth
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/dashboard/:path*", "/admin/:path*"],
 };
