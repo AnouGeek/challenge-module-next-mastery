@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import Link from "next/link";
 import { loginAction, type AuthFormState } from "@/lib/actions/auth";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Field,
@@ -88,6 +88,16 @@ export default function LoginPage() {
             <span className="text-xs text-muted-foreground">OU</span>
             <div className="h-px flex-1 bg-border" />
           </div>
+
+          <Link
+            href="/login-otp"
+            className={buttonVariants({
+              variant: "ghost",
+              className: "mt-2 w-full",
+            })}
+          >
+            Se connecter par code (email)
+          </Link>
 
           <Button
             type="button"
