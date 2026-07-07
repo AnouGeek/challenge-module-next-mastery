@@ -13,7 +13,8 @@ export async function proxy(request: NextRequest) {
   const sessionCookie = getSessionCookie(request);
 
   const { pathname } = request.nextUrl;
-  const isProtectedRoute = pathname.startsWith("/dashboard");
+  const isProtectedRoute =
+    pathname.startsWith("/dashboard") || pathname.startsWith("/admin");
 
   // Pas de cookie du tout et on essaie d'accéder à une route protégée → direction login
   if (isProtectedRoute && !sessionCookie) {
