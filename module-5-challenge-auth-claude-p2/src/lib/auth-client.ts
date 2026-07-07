@@ -18,4 +18,3 @@ export const authClient = createAuthClient({
 // les hooks (useSession) dont on aura besoin dans nos composants React (boutons, formulaires...).
 // Ça rendra notre code beaucoup plus propre quand on les importera ailleurs !
 export const { signIn, signUp, signOut, useSession } = authClient;
-ç;
