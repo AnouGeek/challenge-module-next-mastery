@@ -4,6 +4,8 @@ import {
   createSubscriptionDao,
   getSubscriptionsByUserIdDao,
 } from "@/db/repositories/subscription-repository";
+import { canReadOwnSubscriptions } from "./authorization/authorization-service";
+import type { UserModel } from "@/db/schema/users";
 
 // Validation Zod : la FORME des données + relation entre les dates
 const createSubscriptionSchema = z
@@ -40,6 +42,12 @@ export async function createSubscriptionService(input: unknown) {
   return createSubscriptionDao(parsed.data);
 }
 
-export async function getSubscriptionsForUserService(userId: string) {
-  return getSubscriptionsByUserIdDao(userId);
+export async function getSubscriptionsForUserService(
+  currentUser: UserModel,
+  targetUserId: string,
+) {
+  if (!canReadOwnSubscriptions(currentUser, targetUserId)) {
+    throw new Error("Accès non autorisé");
+  }
+  return getSubscriptionsByUserIdDao(targetUserId);
 }
