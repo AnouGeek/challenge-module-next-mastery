@@ -7,7 +7,7 @@ export const statusEnum = pgEnum("status", ["active", "cancelled", "pending"]);
 export const subscriptions = pgTable("subscriptions", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id").references(() => users.id),
-  status: statusEnum("status").notNull(),
+  status: statusEnum("status").notNull().default("pending"),
   amount: integer("amount").notNull(),
   startDate: timestamp("start_date").notNull(),
   endDate: timestamp("end_date").notNull(),
