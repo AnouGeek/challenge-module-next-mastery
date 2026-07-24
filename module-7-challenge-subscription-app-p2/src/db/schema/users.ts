@@ -10,3 +10,6 @@ export const users = pgTable("users", {
   role: roleEnum("role").default('USER'),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+export type UserModel = typeof users.$inferSelect
+export type AddUserModel = typeof users.$inferInsert

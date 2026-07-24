@@ -1,10 +1,4 @@
-import {
-  integer,
-  pgEnum,
-  pgTable,
-  timestamp,
-  uuid,
-} from "drizzle-orm/pg-core";
+import { integer, pgEnum, pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 
 import { users } from "./users";
 
@@ -19,3 +13,6 @@ export const subscriptions = pgTable("subscriptions", {
   endDate: timestamp("end_date").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
+
+export type SubscriptionModel = typeof subscriptions.$inferSelect;
+export type AddSubscriptionModel = typeof subscriptions.$inferInsert;
