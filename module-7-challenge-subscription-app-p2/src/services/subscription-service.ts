@@ -3,6 +3,8 @@ import {
   getSubscriptionByUserIdDao,
 } from "@/db/repositories/subscription-repository";
 import * as z from "zod";
+import { canReadOwnSubscriptions } from "./authorization/authorization-service";
+import { UserModel } from "@/db/schema/users";
 
 const createSubscriptionSchema = z
   .object({
@@ -35,4 +37,13 @@ export async function createSubscriptionService(input: unknown) {
     throw new Error("dejà un abonnement actif");
   }
   return createSubscriptionDao(parsed.data);
+}
+
+export async function getSubscriptionsForUserService(currentUser: UserModel, targetUserId: string) {
+  const isAuthorized = canReadOwnSubscriptions(currentUser, targetUserId)
+
+  if(!isAuthorized) {
+    throw new Error ("Accés non autorisé")
+  }
+  return getSubscriptionByUserIdDao(targetUserId)
 }
