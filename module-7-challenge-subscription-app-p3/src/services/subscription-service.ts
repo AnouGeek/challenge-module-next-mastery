@@ -4,7 +4,7 @@ import {
 } from "@/db/repositories/subscription-repository";
 import { SubscriptionModel } from "@/db/schema/subscriptions";
 import { UserModel } from "@/db/schema/users";
-import { canReadSubscriptions } from "@/services/authorization/authorization-service";
+import { canReadSubscriptions, isAdminOrOwner } from "@/services/authorization/authorization-service";
 import { z } from "zod";
 
 const createSubscriptionSchema = z
@@ -19,13 +19,17 @@ const createSubscriptionSchema = z
     path: ["endDate"],
   });
 
-export async function createSubscription(
+export async function createSubscription( currentUser: UserModel,
   input: unknown,
 ): Promise<SubscriptionModel> {
   const parsed = createSubscriptionSchema.safeParse(input);
 
   if (!parsed.success) {
     throw new Error(`validation a échoué ${parsed.error.message}`);
+  }
+
+  if(!isAdminOrOwner(currentUser, parsed.data.userId)) {
+    throw new Error("Accés non autorisé")
   }
 
   const existingSubscriptions = await getSubscriptionsByUserId(
