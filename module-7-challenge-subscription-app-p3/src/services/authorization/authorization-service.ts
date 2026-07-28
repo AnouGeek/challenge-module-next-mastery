@@ -11,5 +11,5 @@ export function canReadSubscriptions(
   user: UserModel,
   targetUserId: string,
 ): boolean {
-  return isAdminOrOwner(user, targetUserId)
+  return isAdminOrOwner(user, targetUserId);
 }
