@@ -1,9 +1,11 @@
 "use server";
-import { getConnectedUser } from "@/services/authentification/auth-service";
-import { createSubscription } from "@/services/subscription-service";
-import { revalidatePath } from "next/cache";
-import { z } from "zod";
 
+import { z } from "zod";
+import { createSubscription } from "@/services/subscription-service";
+import { getConnectedUser } from "@/services/authentification/auth-service";
+import { revalidatePath } from "next/cache";
+
+// userId retiré du schéma : il ne vient jamais du client
 const createSubscriptionFormSchema = z.object({
   amount: z.string().transform((val) => parseFloat(val)),
   startDate: z.string().transform((val) => new Date(val)),
@@ -33,6 +35,8 @@ export async function createSubscriptionAction(
   }
 
   try {
+    // Le service prend maintenant currentUser en premier paramètre.
+    // Le userId vient du serveur, pas du formulaire.
     await createSubscription(currentUser, {
       ...parsed.data,
       userId: currentUser.id,
@@ -43,5 +47,5 @@ export async function createSubscriptionAction(
 
   revalidatePath("/subscriptions");
 
-  return { success: true, message: "Abonnement créé avec succés" };
+  return { success: true, message: "Abonnement créé avec succès" };
 }
